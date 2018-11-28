@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Your Rails App</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <%= link_to image_tag('sizzle.png'), root_path, id: "logo" %>
+    <% if user_signed_in? %>
+      <p class="info">
+        Logged in as <strong><%= current_user.email %></strong>.
+      </p>
+      <%= link_to 'Home 🏠', root_path %>
+      <%= link_to 'New Post 🏙', new_post_path %>
+      <%= link_to 'Edit profile', edit_user_registration_path%>
+      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "Sign up", new_user_registration_path  %>
+      <%= link_to "Login", new_user_session_path %>
+    <% end %>
+  </div>
+
+</header>
+<div class="container">
+  <%= yield %>
+</div>
+</body>
+</html>
+

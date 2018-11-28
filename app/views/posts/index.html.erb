@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Posts</h1>
+
+<table>
+  <% if user_signed_in? %>
+    <% @posts.each do |post| %>
+      <div class="post">
+        <h2><%= post.user.first_name %> <%= post.user.last_name %></h2>
+        <% if not post.photo.attachment.nil? %>
+          <%= image_tag post.photo, style: 'max-width: 500px' %>
+        <% end %>
+
+        <img src="#" />
+        <p><%= post.caption %></p>
+        <%= link_to "Like (#{post.users_liked.length})", like_path(post), method: :patch %>
+        <%= link_to "Dislike (#{post.users_disliked.length})", dislike_path(post), method: :patch %>
+
+        <%= form_for("post", :url => comment_path(post), :html => { :method => :patch} ) do |f| %>
+          <%= f.text_area(:contents, :size => "50x10") %>
+          <%= submit_tag("Submit") %>
+          <%= link_to "Comments ", comment_path(post), method: :patch %>
+
+          <% post.comments.each do |comment| # Scope to the current post %>
+            <div>  <!-- Need to open your div -->
+              <%= comment.contents %>
+            </div>
+          <% end %>
+        <% end %>
+
+
+
+        <% if current_user.id == post.user.id %>
+          <%= link_to 'Show', post %>
+          <%= link_to 'Edit', edit_post_path(post) %>
+          <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>
+      Please sign in to view posts!
+    </p>
+  <% end %>
+</table>
+
+<br>
